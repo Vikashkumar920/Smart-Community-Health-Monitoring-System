@@ -9,7 +9,8 @@ router.get("/", (req, res) => {
       (SELECT COUNT(*) FROM users WHERE role = 'doctor') AS totalDoctors,
       (SELECT COUNT(*) FROM hospitals) AS totalHospitals,
       (SELECT COUNT(*) FROM alerts WHERE status = 'active') AS activeAlerts,
-      (SELECT COUNT(*) FROM health_records) AS totalHealthRecords
+      (SELECT COUNT(*) FROM health_records) AS totalHealthRecords,
+      (SELECT COUNT(*) FROM water_quality) AS totalWaterRecords
   `;
 
   db.query(sql, (err, results) => {
