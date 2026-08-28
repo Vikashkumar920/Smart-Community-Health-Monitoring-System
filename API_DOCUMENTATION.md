@@ -469,3 +469,188 @@ Response:
   }
 ]
 ```
+
+---
+
+# Water Quality APIs
+
+## Get All Water Quality Records
+
+### GET /api/water-quality
+
+Response:
+
+```json
+[
+  {
+    "id": 1,
+    "village_name": "Rampur",
+    "ph_level": "5.50",
+    "turbidity": "12.00",
+    "contamination_level": 90,
+    "risk_status": "high",
+    "created_at": "2026-08-28T05:07:54.000Z"
+  }
+]
+```
+
+---
+
+## Create Water Quality Record
+
+### POST /api/water-quality
+
+Request:
+
+```json
+{
+  "village_name": "Rampur",
+  "ph_level": 5.5,
+  "turbidity": 12,
+  "contamination_level": 90
+}
+```
+
+Response:
+
+```json
+{
+  "message": "Water quality record created successfully",
+  "riskStatus": "high",
+  "recordId": 1
+}
+```
+
+### Risk Assessment Rules
+
+#### High Risk
+
+- contamination_level >= 80
+- turbidity >= 10
+- ph_level < 6
+- ph_level > 8.5
+
+#### Medium Risk
+
+- contamination_level >= 50
+- turbidity >= 5
+
+#### Low Risk
+
+- All other conditions
+
+### Automatic Alert Generation
+
+When risk status becomes HIGH:
+
+```json
+{
+  "alert_type": "Water Contamination",
+  "message": "High contamination detected",
+  "severity": "high"
+}
+```
+
+is automatically generated.
+
+---
+
+# Village Risk APIs
+
+## Get Village Risk Records
+
+### GET /api/village-risks
+
+Response:
+
+```json
+[
+  {
+    "village_name": "Rampur3",
+    "contamination_level": 90,
+    "risk_status": "high",
+    "created_at": "2026-08-28T05:17:13.000Z"
+  }
+]
+```
+
+---
+
+## Get Village Risk Summary
+
+### GET /api/village-risks/summary
+
+Response:
+
+```json
+{
+  "highRiskVillages": 4,
+  "mediumRiskVillages": 0,
+  "lowRiskVillages": 0
+}
+```
+
+---
+
+## Get Outbreak Warnings
+
+### GET /api/village-risks/outbreaks
+
+Response:
+
+```json
+[
+  {
+    "village": "Rampur3",
+    "totalHighRiskRecords": 5,
+    "status": "OUTBREAK WARNING",
+    "riskLevel": "CRITICAL"
+  }
+]
+```
+
+### Outbreak Detection Logic
+
+If a village accumulates 5 or more HIGH-RISK water quality records, the system automatically flags the village as:
+
+- OUTBREAK WARNING
+- Risk Level: CRITICAL
+
+---
+
+# Updated Dashboard APIs
+
+## GET /api/dashboard
+
+Response:
+
+```json
+{
+  "totalUsers": 4,
+  "totalDoctors": 3,
+  "totalHospitals": 1,
+  "activeAlerts": 5,
+  "totalHealthRecords": 2,
+  "totalWaterRecords": 5
+}
+```
+
+---
+
+## GET /api/dashboard/recent-alerts
+
+Response:
+
+```json
+[
+  {
+    "id": 10,
+    "patient_name": "Test Patient",
+    "alert_type": "Water Contamination",
+    "message": "High contamination detected in Rampur3",
+    "severity": "high",
+    "status": "active",
+    "created_at": "2026-08-28T05:17:13.000Z"
+  }
+]
+```
