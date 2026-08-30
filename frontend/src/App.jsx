@@ -1,6 +1,15 @@
+import Navbar from './components/Navbar/Navbar'
+
 function App() {
   return (
-    <h1>ArogyaAlert</h1>
+    <>
+      <Navbar />
+
+      <main>
+        <h1>ArogyaAlert Dashboard</h1>
+        <p>Smart Community Health Monitoring System</p>
+      </main>
+    </>
   )
 }
 
