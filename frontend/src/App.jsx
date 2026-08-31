@@ -2,6 +2,7 @@ import Navbar from './components/Navbar/Navbar'
 import Sidebar from './components/Sidebar/Sidebar'
 import Card from './components/Cards/Card'
 import AlertBox from './components/AlertBox/AlertBox'
+import HealthSummary from './components/HealthSummary/HealthSummary'
 
 function App() {
   return (
@@ -52,6 +53,8 @@ function App() {
             title="Water Quality Warning"
             message="Water quality requires attention"
           />
+
+          <HealthSummary />
         </main>
       </div>
     </>
