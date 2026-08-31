@@ -9,6 +9,7 @@ import VillageOverview from './components/VillageOverview/VillageOverview'
 import WaterQuality from './components/WaterQuality/WaterQuality'
 import HealthReports from './components/HealthReports/HealthReports'
 import ReportForm from './components/ReportForm/ReportForm'
+import dashboardData from './data/dashboardData'
 
 function App() {
   return (
@@ -25,25 +26,25 @@ function App() {
           <div className="dashboard-cards">
             <Card
               title="Total Villages"
-              value="25"
+              value={dashboardData.totalVillages}
               icon="🏘️"
             />
 
             <Card
               title="Total Reports"
-              value="120"
+              value={dashboardData.totalReports}
               icon="📋"
             />
 
             <Card
               title="High Risk Areas"
-              value="5"
+              value={dashboardData.highRiskAreas}
               icon="⚠️"
             />
 
             <Card
               title="Active Alerts"
-              value="8"
+              value={dashboardData.activeAlerts}
               icon="🚨"
             />
           </div>
