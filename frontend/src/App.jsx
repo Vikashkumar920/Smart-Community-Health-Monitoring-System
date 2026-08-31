@@ -1,6 +1,7 @@
 import Navbar from './components/Navbar/Navbar'
 import Sidebar from './components/Sidebar/Sidebar'
 import Card from './components/Cards/Card'
+import AlertBox from './components/AlertBox/AlertBox'
 
 function App() {
   return (
@@ -39,6 +40,18 @@ function App() {
               icon="🚨"
             />
           </div>
+
+          <AlertBox
+            type="high"
+            title="High Risk Alert"
+            message="High contamination detected in Rampur3"
+          />
+
+          <AlertBox
+            type="medium"
+            title="Water Quality Warning"
+            message="Water quality requires attention"
+          />
         </main>
       </div>
     </>

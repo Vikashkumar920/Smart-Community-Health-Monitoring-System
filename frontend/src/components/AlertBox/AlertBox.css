@@ -1,0 +1,41 @@
+.alert-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 10px;
+  margin-top: 20px;
+  border: 1px solid;
+}
+
+.alert-box.high {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #b91c1c;
+}
+
+.alert-box.medium {
+  background: #fffbeb;
+  border-color: #fde68a;
+  color: #b45309;
+}
+
+.alert-box.low {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #15803d;
+}
+
+.alert-icon {
+  font-size: 22px;
+}
+
+.alert-content h3 {
+  margin: 0 0 5px;
+  font-size: 16px;
+}
+
+.alert-content p {
+  margin: 0;
+  font-size: 14px;
+}
