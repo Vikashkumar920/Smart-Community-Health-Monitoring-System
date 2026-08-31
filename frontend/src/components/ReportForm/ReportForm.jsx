@@ -1,14 +1,70 @@
 import { useState } from 'react'
+import axios from 'axios'
 import './ReportForm.css'
 
 function ReportForm({ onReportSubmit }) {
   const [submitted, setSubmitted] = useState(false)
 
-  const handleSubmit = (event) => {
+  const [formData, setFormData] = useState({
+    village_name: '',
+    water_quality: '',
+    symptoms: '',
+    affected_people: '',
+    report_date: ''
+  })
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  const handleSubmit = async (event) => {
     event.preventDefault()
 
-    onReportSubmit()
-    setSubmitted(true)
+    let contamination = 20
+    let ph = 7
+    let turbidity = 2
+
+    if (formData.water_quality === 'average') {
+      contamination = 60
+      turbidity = 6
+    }
+
+    if (formData.water_quality === 'poor') {
+      contamination = 90
+      ph = 5.5
+      turbidity = 12
+    }
+
+    try {
+      await axios.post(
+        'http://localhost:5000/api/water-quality',
+        {
+          village_name: formData.village_name,
+          ph_level: ph,
+          turbidity: turbidity,
+          contamination_level: contamination
+        }
+      )
+
+      setSubmitted(true)
+
+      if (onReportSubmit) {
+        onReportSubmit()
+      }
+
+      setFormData({
+        village_name: '',
+        water_quality: '',
+        symptoms: '',
+        affected_people: '',
+        report_date: ''
+      })
+    } catch (error) {
+      console.error('Report submission failed:', error)
+    }
   }
 
   return (
@@ -31,6 +87,9 @@ function ReportForm({ onReportSubmit }) {
           <label>Village Name</label>
           <input
             type="text"
+            name="village_name"
+            value={formData.village_name}
+            onChange={handleChange}
             placeholder="Enter village name"
             required
           />
@@ -40,6 +99,9 @@ function ReportForm({ onReportSubmit }) {
           <label>Number of Affected People</label>
           <input
             type="number"
+            name="affected_people"
+            value={formData.affected_people}
+            onChange={handleChange}
             min="1"
             placeholder="Enter number"
             required
@@ -48,7 +110,12 @@ function ReportForm({ onReportSubmit }) {
 
         <div className="form-group">
           <label>Symptoms</label>
-          <select required>
+          <select
+            name="symptoms"
+            value={formData.symptoms}
+            onChange={handleChange}
+            required
+          >
             <option value="">Select symptoms</option>
             <option value="fever">Fever</option>
             <option value="diarrhea">Diarrhea</option>
@@ -63,7 +130,12 @@ function ReportForm({ onReportSubmit }) {
 
         <div className="form-group">
           <label>Water Quality</label>
-          <select required>
+          <select
+            name="water_quality"
+            value={formData.water_quality}
+            onChange={handleChange}
+            required
+          >
             <option value="">Select water quality</option>
             <option value="good">Good</option>
             <option value="average">Average</option>
@@ -71,18 +143,13 @@ function ReportForm({ onReportSubmit }) {
           </select>
         </div>
 
-        <div className="form-group full-width">
-          <label>Additional Information</label>
-          <textarea
-            rows="4"
-            placeholder="Describe any additional health concerns..."
-          ></textarea>
-        </div>
-
         <div className="form-group">
           <label>Report Date</label>
           <input
             type="date"
+            name="report_date"
+            value={formData.report_date}
+            onChange={handleChange}
             required
           />
         </div>

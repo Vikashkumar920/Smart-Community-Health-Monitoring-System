@@ -1,6 +1,29 @@
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 import './VillageOverview.css'
 
 function VillageOverview() {
+  const [villages, setVillages] = useState([])
+
+  useEffect(() => {
+    fetchVillages()
+  }, [])
+
+  const fetchVillages = async () => {
+    try {
+      const response = await axios.get(
+        'http://localhost:5000/api/village-risks'
+      )
+
+      setVillages(response.data)
+    } catch (error) {
+      console.error(
+        'Failed to fetch village data:',
+        error
+      )
+    }
+  }
+
   return (
     <section className="village-overview">
       <div className="village-header">
@@ -15,65 +38,36 @@ function VillageOverview() {
       </div>
 
       <div className="village-list">
-        <div className="village-card">
-          <div className="village-info">
-            <div className="village-icon">🏘️</div>
+        {villages.map((village, index) => (
+          <div
+            className="village-card"
+            key={index}
+          >
+            <div className="village-info">
+              <div className="village-icon">🏘️</div>
 
-            <div>
-              <h3>Rampur</h3>
-              <p>25 health reports</p>
+              <div>
+                <h3>{village.village_name}</h3>
+                <p>
+                  Contamination Level:{' '}
+                  {village.contamination_level}%
+                </p>
+              </div>
             </div>
+
+            <span
+              className={`village-status ${
+                village.risk_status === 'high'
+                  ? 'high-status'
+                  : village.risk_status === 'medium'
+                  ? 'medium-status'
+                  : 'low-status'
+              }`}
+            >
+              {village.risk_status.toUpperCase()}
+            </span>
           </div>
-
-          <span className="village-status high-status">
-            High Risk
-          </span>
-        </div>
-
-        <div className="village-card">
-          <div className="village-info">
-            <div className="village-icon">🏘️</div>
-
-            <div>
-              <h3>Lakshmipur</h3>
-              <p>18 health reports</p>
-            </div>
-          </div>
-
-          <span className="village-status medium-status">
-            Medium Risk
-          </span>
-        </div>
-
-        <div className="village-card">
-          <div className="village-info">
-            <div className="village-icon">🏘️</div>
-
-            <div>
-              <h3>Shivpur</h3>
-              <p>32 health reports</p>
-            </div>
-          </div>
-
-          <span className="village-status low-status">
-            Low Risk
-          </span>
-        </div>
-
-        <div className="village-card">
-          <div className="village-info">
-            <div className="village-icon">🏘️</div>
-
-            <div>
-              <h3>Rampur Kalan</h3>
-              <p>21 health reports</p>
-            </div>
-          </div>
-
-          <span className="village-status low-status">
-            Low Risk
-          </span>
-        </div>
+        ))}
       </div>
     </section>
   )

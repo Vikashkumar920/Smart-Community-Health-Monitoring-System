@@ -5,6 +5,7 @@ import Navbar from './components/Navbar/Navbar'
 import Sidebar from './components/Sidebar/Sidebar'
 import Card from './components/Cards/Card'
 import AlertBox from './components/AlertBox/AlertBox'
+import OutbreakAlerts from './components/OutbreakAlerts/OutbreakAlerts'
 import HealthSummary from './components/HealthSummary/HealthSummary'
 import RecentReports from './components/RecentReports/RecentReports'
 import RiskOverview from './components/RiskOverview/RiskOverview'
@@ -22,6 +23,8 @@ function App() {
     totalHealthRecords: 0,
     totalWaterRecords: 0
   })
+
+  const [alerts, setAlerts] = useState([])
 
   const [reports, setReports] = useState([
     {
@@ -46,6 +49,7 @@ function App() {
 
   useEffect(() => {
     fetchDashboard()
+    fetchAlerts()
   }, [])
 
   const fetchDashboard = async () => {
@@ -57,6 +61,22 @@ function App() {
       setDashboard(response.data)
     } catch (error) {
       console.error('Dashboard fetch failed:', error)
+    }
+  }
+
+  const fetchAlerts = async () => {
+    try {
+      const response = await axios.get(
+        'http://localhost:5000/api/alerts'
+      )
+
+      const activeAlerts = response.data
+        .filter(alert => alert.status === 'active')
+        .slice(0, 2)
+
+      setAlerts(activeAlerts)
+    } catch (error) {
+      console.error('Alerts fetch failed:', error)
     }
   }
 
@@ -108,11 +128,16 @@ function App() {
             />
           </div>
 
-          <AlertBox
-            type="high"
-            title="Backend Connected"
-            message="Dashboard data is coming from API"
-          />
+          {alerts.map(alert => (
+            <AlertBox
+              key={alert.id}
+              type={alert.severity}
+              title={alert.alert_type}
+              message={alert.message}
+            />
+          ))}
+
+          <OutbreakAlerts />
 
           <HealthSummary />
 
@@ -126,7 +151,9 @@ function App() {
 
           <HealthReports />
 
-          <ReportForm onReportSubmit={handleReportSubmit} />
+          <ReportForm
+            onReportSubmit={handleReportSubmit}
+          />
         </main>
       </div>
     </>

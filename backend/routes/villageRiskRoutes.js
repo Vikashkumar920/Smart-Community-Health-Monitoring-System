@@ -4,13 +4,15 @@ const db = require("../config/db");
 
 router.get("/", (req, res) => {
   const sql = `
-    SELECT
-      village_name,
-      contamination_level,
-      risk_status,
-      created_at
-    FROM water_quality
-    ORDER BY created_at DESC
+    SELECT w1.*
+    FROM water_quality w1
+    INNER JOIN (
+      SELECT village_name, MAX(id) AS latest_id
+      FROM water_quality
+      GROUP BY village_name
+    ) w2
+    ON w1.id = w2.latest_id
+    ORDER BY w1.id DESC
   `;
 
   db.query(sql, (err, results) => {
@@ -23,13 +25,23 @@ router.get("/", (req, res) => {
     res.json(results);
   });
 });
+
 router.get("/summary", (req, res) => {
   const sql = `
     SELECT
       SUM(CASE WHEN risk_status = 'high' THEN 1 ELSE 0 END) AS highRiskVillages,
       SUM(CASE WHEN risk_status = 'medium' THEN 1 ELSE 0 END) AS mediumRiskVillages,
       SUM(CASE WHEN risk_status = 'low' THEN 1 ELSE 0 END) AS lowRiskVillages
-    FROM water_quality
+    FROM (
+      SELECT w1.*
+      FROM water_quality w1
+      INNER JOIN (
+        SELECT village_name, MAX(id) AS latest_id
+        FROM water_quality
+        GROUP BY village_name
+      ) w2
+      ON w1.id = w2.latest_id
+    ) latest_records
   `;
 
   db.query(sql, (err, results) => {
@@ -71,4 +83,5 @@ router.get("/outbreaks", (req, res) => {
     res.json(outbreaks);
   });
 });
+
 module.exports = router;

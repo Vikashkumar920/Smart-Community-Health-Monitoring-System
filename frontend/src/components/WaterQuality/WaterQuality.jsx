@@ -9,7 +9,17 @@ function WaterQuality() {
     axios
       .get('http://localhost:5000/api/water-quality')
       .then((res) => {
-        setWaterData(res.data.slice(0, 3))
+        const uniqueVillages = []
+        const seen = new Set()
+
+        res.data.forEach((item) => {
+          if (!seen.has(item.village_name)) {
+            seen.add(item.village_name)
+            uniqueVillages.push(item)
+          }
+        })
+
+        setWaterData(uniqueVillages.slice(0, 3))
       })
       .catch((err) => {
         console.error('Water Quality API Error:', err)
