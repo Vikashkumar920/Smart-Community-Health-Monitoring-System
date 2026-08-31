@@ -17,8 +17,38 @@ function App() {
     dashboardData.totalReports
   )
 
+  const [reports, setReports] = useState([
+    {
+      village: 'Rampur',
+      symptoms: 'Fever, Diarrhea',
+      risk: 'HIGH',
+      date: 'Today'
+    },
+    {
+      village: 'Lakshmipur',
+      symptoms: 'Fever',
+      risk: 'MEDIUM',
+      date: 'Today'
+    },
+    {
+      village: 'Shivpur',
+      symptoms: 'Normal',
+      risk: 'LOW',
+      date: 'Yesterday'
+    }
+  ])
+
   const handleReportSubmit = () => {
     setTotalReports(totalReports + 1)
+
+    const newReport = {
+      village: 'New Village',
+      symptoms: 'Fever',
+      risk: 'MEDIUM',
+      date: 'Today'
+    }
+
+    setReports([newReport, ...reports])
   }
 
   return (
@@ -72,7 +102,7 @@ function App() {
 
           <HealthSummary />
 
-          <RecentReports />
+          <RecentReports reports={reports} />
 
           <RiskOverview />
 

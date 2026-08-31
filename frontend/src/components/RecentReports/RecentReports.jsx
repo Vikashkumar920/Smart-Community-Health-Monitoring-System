@@ -1,6 +1,6 @@
 import './RecentReports.css'
 
-function RecentReports() {
+function RecentReports({ reports }) {
   return (
     <section className="recent-reports">
       <div className="reports-header">
@@ -22,26 +22,16 @@ function RecentReports() {
           <span>Date</span>
         </div>
 
-        <div className="table-row">
-          <span>Rampur</span>
-          <span>Fever, Diarrhea</span>
-          <span className="risk-high">HIGH</span>
-          <span>Today</span>
-        </div>
-
-        <div className="table-row">
-          <span>Lakshmipur</span>
-          <span>Fever</span>
-          <span className="risk-medium">MEDIUM</span>
-          <span>Today</span>
-        </div>
-
-        <div className="table-row">
-          <span>Shivpur</span>
-          <span>Normal</span>
-          <span className="risk-low">LOW</span>
-          <span>Yesterday</span>
-        </div>
+        {reports.map((report, index) => (
+          <div className="table-row" key={index}>
+            <span>{report.village}</span>
+            <span>{report.symptoms}</span>
+            <span className={`risk-${report.risk.toLowerCase()}`}>
+              {report.risk.toUpperCase()}
+            </span>
+            <span>{report.date}</span>
+          </div>
+        ))}
       </div>
     </section>
   )
