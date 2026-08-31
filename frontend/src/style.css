@@ -369,3 +369,14 @@ code {
     padding: 15px;
   }
 }
+/* Dashboard heading spacing */
+
+.main-content h1 {
+  margin: 0 0 8px;
+  line-height: 1.2;
+}
+
+.main-content > p {
+  margin: 0 0 28px;
+  line-height: 1.5;
+}
