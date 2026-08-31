@@ -15,11 +15,31 @@ function RiskOverview() {
 
   const fetchRiskSummary = async () => {
     try {
-     const response = await axios.get(
-  'http://localhost:5000/api/village-risks/summary'
-)
+      const response = await axios.get(
+        'http://localhost:5000/api/community-reports'
+      )
 
-      setRiskData(response.data)
+      let high = 0
+      let medium = 0
+      let low = 0
+
+      response.data.forEach(report => {
+        const affected = Number(report.affected_people)
+
+        if (affected >= 50) {
+          high++
+        } else if (affected >= 20) {
+          medium++
+        } else {
+          low++
+        }
+      })
+
+      setRiskData({
+        highRiskVillages: high,
+        mediumRiskVillages: medium,
+        lowRiskVillages: low
+      })
     } catch (error) {
       console.error(
         'Failed to fetch risk summary:',

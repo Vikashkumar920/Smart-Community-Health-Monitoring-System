@@ -12,10 +12,19 @@ function OutbreakAlerts() {
   const fetchOutbreaks = async () => {
     try {
       const response = await axios.get(
-        'http://localhost:5000/api/village-risks/outbreaks'
+        'http://localhost:5000/api/community-reports'
       )
 
-      setOutbreaks(response.data)
+      const highRiskReports = response.data
+        .filter(report => report.affected_people >= 50)
+        .map(report => ({
+          village: report.village_name,
+          totalHighRiskRecords: report.affected_people,
+          status: 'OUTBREAK WARNING',
+          riskLevel: 'CRITICAL'
+        }))
+
+      setOutbreaks(highRiskReports)
     } catch (error) {
       console.error('Failed to fetch outbreaks:', error)
     }
@@ -30,11 +39,14 @@ function OutbreakAlerts() {
       <h2>🚨 Outbreak Alerts</h2>
 
       {outbreaks.map((outbreak, index) => (
-        <div key={index} className="outbreak-card">
+        <div
+          key={index}
+          className="outbreak-card"
+        >
           <h3>{outbreak.village}</h3>
 
           <p>
-            High Risk Records:
+            Affected People:
             <strong>
               {' '}
               {outbreak.totalHighRiskRecords}

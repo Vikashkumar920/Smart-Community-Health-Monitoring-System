@@ -10,9 +10,10 @@ import RecentReports from './components/RecentReports/RecentReports'
 import RiskOverview from './components/RiskOverview/RiskOverview'
 import VillageOverview from './components/VillageOverview/VillageOverview'
 import WaterQuality from './components/WaterQuality/WaterQuality'
-import HealthReports from './components/HealthReports/HealthReports'
+
 import ReportForm from './components/ReportForm/ReportForm'
 import OutbreakAlerts from './components/OutbreakAlerts/OutbreakAlerts'
+
 function App() {
   const [dashboard, setDashboard] = useState({
     totalUsers: 0,
@@ -24,13 +25,13 @@ function App() {
   })
 
   const [alerts, setAlerts] = useState([])
-
   const [reports, setReports] = useState([])
+
   useEffect(() => {
-  fetchDashboard()
-  fetchAlerts()
-  fetchReports()
-}, [])
+    fetchDashboard()
+    fetchAlerts()
+    fetchReports()
+  }, [])
 
   const fetchDashboard = async () => {
     try {
@@ -59,29 +60,28 @@ function App() {
       console.error('Alerts fetch failed:', error)
     }
   }
-const fetchReports = async () => {
+
+ const fetchReports = async () => {
   try {
     const response = await axios.get(
-      'http://localhost:5000/api/health-records/recent'
+      'http://localhost:5000/api/community-reports'
     )
 
-    const formattedReports = response.data.map(record => {
+    const formattedReports = (response.data || []).map(report => {
       let risk = 'LOW'
 
-      if (
-        Number(record.oxygen_level) < 95 ||
-        Number(record.temperature) > 38 ||
-        Number(record.heart_rate) > 120
-      ) {
+      if (report.affected_people >= 50) {
         risk = 'HIGH'
+      } else if (report.affected_people >= 20) {
+        risk = 'MEDIUM'
       }
 
       return {
-        village: `Patient ${record.user_id}`,
-        symptoms: `Temp ${record.temperature}°C`,
+        village: report.village_name,
+        symptoms: report.symptoms,
         risk,
         date: new Date(
-          record.recorded_at
+          report.report_date
         ).toLocaleDateString()
       }
     })
@@ -89,15 +89,15 @@ const fetchReports = async () => {
     setReports(formattedReports)
   } catch (error) {
     console.error('Reports fetch failed:', error)
+    setReports([])
   }
 }
- const handleReportSubmit = () => {
-  fetchReports()
-  fetchDashboard()
-  fetchAlerts()
-}
+  const handleReportSubmit = () => {
+    fetchReports()
+    fetchDashboard()
+    fetchAlerts()
+  }
 
-   
   return (
     <>
       <Navbar />
@@ -144,6 +144,8 @@ const fetchReports = async () => {
             />
           ))}
 
+          <OutbreakAlerts />
+
           <HealthSummary />
 
           <RecentReports reports={reports} />
@@ -154,9 +156,11 @@ const fetchReports = async () => {
 
           <WaterQuality />
 
-          <HealthReports />
+         
 
-          <ReportForm onReportSubmit={handleReportSubmit} />
+          <ReportForm
+            onReportSubmit={handleReportSubmit}
+          />
         </main>
       </div>
     </>

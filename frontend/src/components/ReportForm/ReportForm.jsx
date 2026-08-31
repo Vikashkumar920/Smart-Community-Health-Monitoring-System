@@ -7,9 +7,9 @@ function ReportForm({ onReportSubmit }) {
 
   const [formData, setFormData] = useState({
     village_name: '',
-    water_quality: '',
     symptoms: '',
     affected_people: '',
+    water_quality: '',
     report_date: ''
   })
 
@@ -40,6 +40,16 @@ function ReportForm({ onReportSubmit }) {
 
     try {
       await axios.post(
+        'http://localhost:5000/api/community-reports',
+        {
+          village_name: formData.village_name,
+          symptoms: formData.symptoms,
+          affected_people: Number(formData.affected_people),
+          report_date: formData.report_date
+        }
+      )
+
+      await axios.post(
         'http://localhost:5000/api/water-quality',
         {
           village_name: formData.village_name,
@@ -57,9 +67,9 @@ function ReportForm({ onReportSubmit }) {
 
       setFormData({
         village_name: '',
-        water_quality: '',
         symptoms: '',
         affected_people: '',
+        water_quality: '',
         report_date: ''
       })
     } catch (error) {
@@ -96,6 +106,26 @@ function ReportForm({ onReportSubmit }) {
         </div>
 
         <div className="form-group">
+          <label>Symptoms</label>
+          <select
+            name="symptoms"
+            value={formData.symptoms}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select symptoms</option>
+            <option value="Fever">Fever</option>
+            <option value="Diarrhea">Diarrhea</option>
+            <option value="Vomiting">Vomiting</option>
+            <option value="Headache">Headache</option>
+            <option value="Fever and Diarrhea">
+              Fever and Diarrhea
+            </option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div className="form-group">
           <label>Number of Affected People</label>
           <input
             type="number"
@@ -106,26 +136,6 @@ function ReportForm({ onReportSubmit }) {
             placeholder="Enter number"
             required
           />
-        </div>
-
-        <div className="form-group">
-          <label>Symptoms</label>
-          <select
-            name="symptoms"
-            value={formData.symptoms}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select symptoms</option>
-            <option value="fever">Fever</option>
-            <option value="diarrhea">Diarrhea</option>
-            <option value="vomiting">Vomiting</option>
-            <option value="headache">Headache</option>
-            <option value="fever-diarrhea">
-              Fever and Diarrhea
-            </option>
-            <option value="other">Other</option>
-          </select>
         </div>
 
         <div className="form-group">

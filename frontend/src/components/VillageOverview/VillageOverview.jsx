@@ -12,7 +12,7 @@ function VillageOverview() {
   const fetchVillages = async () => {
     try {
       const response = await axios.get(
-        'http://localhost:5000/api/village-risks'
+        'http://localhost:5000/api/community-reports'
       )
 
       setVillages(response.data)
@@ -22,6 +22,18 @@ function VillageOverview() {
         error
       )
     }
+  }
+
+  const getRiskStatus = affectedPeople => {
+    if (affectedPeople >= 50) {
+      return 'high'
+    }
+
+    if (affectedPeople >= 20) {
+      return 'medium'
+    }
+
+    return 'low'
   }
 
   return (
@@ -38,36 +50,43 @@ function VillageOverview() {
       </div>
 
       <div className="village-list">
-        {villages.map((village, index) => (
-          <div
-            className="village-card"
-            key={index}
-          >
-            <div className="village-info">
-              <div className="village-icon">🏘️</div>
+        {villages.map((village, index) => {
+          const riskStatus = getRiskStatus(
+            village.affected_people
+          )
 
-              <div>
-                <h3>{village.village_name}</h3>
-                <p>
-                  Contamination Level:{' '}
-                  {village.contamination_level}%
-                </p>
-              </div>
-            </div>
-
-            <span
-              className={`village-status ${
-                village.risk_status === 'high'
-                  ? 'high-status'
-                  : village.risk_status === 'medium'
-                  ? 'medium-status'
-                  : 'low-status'
-              }`}
+          return (
+            <div
+              className="village-card"
+              key={index}
             >
-              {village.risk_status.toUpperCase()}
-            </span>
-          </div>
-        ))}
+              <div className="village-info">
+                <div className="village-icon">🏘️</div>
+
+                <div>
+                  <h3>{village.village_name}</h3>
+
+                  <p>
+                    Affected People:{' '}
+                    {village.affected_people}
+                  </p>
+                </div>
+              </div>
+
+              <span
+                className={`village-status ${
+                  riskStatus === 'high'
+                    ? 'high-status'
+                    : riskStatus === 'medium'
+                    ? 'medium-status'
+                    : 'low-status'
+                }`}
+              >
+                {riskStatus.toUpperCase()}
+              </span>
+            </div>
+          )
+        })}
       </div>
     </section>
   )

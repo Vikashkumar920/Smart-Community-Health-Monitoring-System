@@ -16,29 +16,19 @@ function HealthSummary() {
   const fetchSummary = async () => {
     try {
       const response = await axios.get(
-        'http://localhost:5000/api/health-records/recent'
+        'http://localhost:5000/api/community-reports'
       )
 
       let normal = 0
       let warning = 0
       let critical = 0
 
-      response.data.forEach(record => {
-        const oxygen = Number(record.oxygen_level)
-        const temperature = Number(record.temperature)
-        const heartRate = Number(record.heart_rate)
+      response.data.forEach(report => {
+        const affected = Number(report.affected_people)
 
-        if (
-          oxygen < 95 ||
-          temperature > 38 ||
-          heartRate > 120
-        ) {
+        if (affected >= 50) {
           critical++
-        } else if (
-          oxygen < 97 ||
-          temperature > 37.5 ||
-          heartRate > 100
-        ) {
+        } else if (affected >= 20) {
           warning++
         } else {
           normal++

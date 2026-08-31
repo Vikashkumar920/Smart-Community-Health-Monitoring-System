@@ -13,6 +13,8 @@ const emergencyRoutes = require("./routes/emergencyRoutes");
 const assignmentRoutes = require("./routes/assignmentRoutes");
 const waterQualityRoutes = require("./routes/waterQualityRoutes");
 const villageRiskRoutes = require("./routes/villageRiskRoutes");
+const communityReportsRoutes = require("./routes/communityReportsRoutes");
+
 const app = express();
 
 app.use(cors());
@@ -34,6 +36,8 @@ app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/emergency", emergencyRoutes);
 app.use("/api/water-quality", waterQualityRoutes);
 app.use("/api/village-risks", villageRiskRoutes);
+app.use("/api/community-reports", communityReportsRoutes);
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
