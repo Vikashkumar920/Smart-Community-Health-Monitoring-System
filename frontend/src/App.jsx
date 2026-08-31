@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Navbar from './components/Navbar/Navbar'
 import Sidebar from './components/Sidebar/Sidebar'
 import Card from './components/Cards/Card'
@@ -12,6 +13,14 @@ import ReportForm from './components/ReportForm/ReportForm'
 import dashboardData from './data/dashboardData'
 
 function App() {
+  const [totalReports, setTotalReports] = useState(
+    dashboardData.totalReports
+  )
+
+  const handleReportSubmit = () => {
+    setTotalReports(totalReports + 1)
+  }
+
   return (
     <>
       <Navbar />
@@ -32,7 +41,7 @@ function App() {
 
             <Card
               title="Total Reports"
-              value={dashboardData.totalReports}
+              value={totalReports}
               icon="📋"
             />
 
@@ -73,7 +82,7 @@ function App() {
 
           <HealthReports />
 
-          <ReportForm />
+          <ReportForm onReportSubmit={handleReportSubmit} />
         </main>
       </div>
     </>

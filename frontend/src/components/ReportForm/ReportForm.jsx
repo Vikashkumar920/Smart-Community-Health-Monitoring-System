@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import './ReportForm.css'
 
-function ReportForm() {
+function ReportForm({ onReportSubmit }) {
   const [submitted, setSubmitted] = useState(false)
 
   const handleSubmit = (event) => {
     event.preventDefault()
+
+    onReportSubmit()
     setSubmitted(true)
   }
 
