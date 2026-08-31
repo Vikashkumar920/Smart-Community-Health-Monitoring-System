@@ -1,0 +1,78 @@
+.recent-reports {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  margin-top: 24px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.reports-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.reports-header h2 {
+  margin: 0 0 5px;
+  font-size: 20px;
+  color: #111827;
+}
+
+.reports-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.view-all-btn {
+  border: none;
+  background: #166534;
+  color: #ffffff;
+  padding: 9px 16px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.view-all-btn:hover {
+  background: #14532d;
+}
+
+.reports-table {
+  width: 100%;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 1.2fr 2fr 1fr 1fr;
+  align-items: center;
+  gap: 20px;
+  padding: 15px 10px;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 14px;
+  color: #374151;
+}
+
+.table-heading {
+  font-weight: 600;
+  color: #6b7280;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.risk-high {
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+.risk-medium {
+  color: #b45309;
+  font-weight: 700;
+}
+
+.risk-low {
+  color: #15803d;
+  font-weight: 700;
+}

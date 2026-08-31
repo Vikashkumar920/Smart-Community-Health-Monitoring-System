@@ -3,6 +3,8 @@ import Sidebar from './components/Sidebar/Sidebar'
 import Card from './components/Cards/Card'
 import AlertBox from './components/AlertBox/AlertBox'
 import HealthSummary from './components/HealthSummary/HealthSummary'
+import RecentReports from './components/RecentReports/RecentReports'
+import RiskOverview from './components/RiskOverview/RiskOverview'
 
 function App() {
   return (
@@ -55,6 +57,10 @@ function App() {
           />
 
           <HealthSummary />
+
+          <RecentReports />
+
+          <RiskOverview />
         </main>
       </div>
     </>
