@@ -1,6 +1,16 @@
 import './HealthReports.css'
 
 function HealthReports() {
+  const handleNewReport = () => {
+    const form = document.getElementById('report-form')
+
+    if (form) {
+      form.scrollIntoView({
+        behavior: 'smooth'
+      })
+    }
+  }
+
   return (
     <section className="health-reports">
       <div className="reports-title">
@@ -9,7 +19,10 @@ function HealthReports() {
           <p>Recent health reports submitted by communities</p>
         </div>
 
-        <button className="report-btn">
+        <button
+          className="report-btn"
+          onClick={handleNewReport}
+        >
           + New Report
         </button>
       </div>

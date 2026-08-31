@@ -10,7 +10,7 @@ function ReportForm() {
   }
 
   return (
-    <section className="report-form-section">
+    <section className="report-form-section" id="report-form">
       <div className="report-form-header">
         <div>
           <h2>Submit Health Report</h2>
@@ -86,7 +86,10 @@ function ReportForm() {
         </div>
 
         <div className="form-actions">
-          <button type="submit" className="submit-report-btn">
+          <button
+            type="submit"
+            className="submit-report-btn"
+          >
             Submit Report
           </button>
         </div>
