@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+
 import Navbar from './components/Navbar/Navbar'
 import Sidebar from './components/Sidebar/Sidebar'
 import Card from './components/Cards/Card'
@@ -10,12 +12,16 @@ import VillageOverview from './components/VillageOverview/VillageOverview'
 import WaterQuality from './components/WaterQuality/WaterQuality'
 import HealthReports from './components/HealthReports/HealthReports'
 import ReportForm from './components/ReportForm/ReportForm'
-import dashboardData from './data/dashboardData'
 
 function App() {
-  const [totalReports, setTotalReports] = useState(
-    dashboardData.totalReports
-  )
+  const [dashboard, setDashboard] = useState({
+    totalUsers: 0,
+    totalDoctors: 0,
+    totalHospitals: 0,
+    activeAlerts: 0,
+    totalHealthRecords: 0,
+    totalWaterRecords: 0
+  })
 
   const [reports, setReports] = useState([
     {
@@ -38,9 +44,23 @@ function App() {
     }
   ])
 
-  const handleReportSubmit = () => {
-    setTotalReports(totalReports + 1)
+  useEffect(() => {
+    fetchDashboard()
+  }, [])
 
+  const fetchDashboard = async () => {
+    try {
+      const response = await axios.get(
+        'http://localhost:5000/api/dashboard'
+      )
+
+      setDashboard(response.data)
+    } catch (error) {
+      console.error('Dashboard fetch failed:', error)
+    }
+  }
+
+  const handleReportSubmit = () => {
     const newReport = {
       village: 'New Village',
       symptoms: 'Fever',
@@ -64,40 +84,34 @@ function App() {
 
           <div className="dashboard-cards">
             <Card
-              title="Total Villages"
-              value={dashboardData.totalVillages}
-              icon="🏘️"
+              title="Total Users"
+              value={dashboard.totalUsers}
+              icon="👥"
             />
 
             <Card
-              title="Total Reports"
-              value={totalReports}
+              title="Doctors"
+              value={dashboard.totalDoctors}
+              icon="🩺"
+            />
+
+            <Card
+              title="Health Records"
+              value={dashboard.totalHealthRecords}
               icon="📋"
             />
 
             <Card
-              title="High Risk Areas"
-              value={dashboardData.highRiskAreas}
-              icon="⚠️"
-            />
-
-            <Card
               title="Active Alerts"
-              value={dashboardData.activeAlerts}
+              value={dashboard.activeAlerts}
               icon="🚨"
             />
           </div>
 
           <AlertBox
             type="high"
-            title="High Risk Alert"
-            message="High contamination detected in Rampur3"
-          />
-
-          <AlertBox
-            type="medium"
-            title="Water Quality Warning"
-            message="Water quality requires attention"
+            title="Backend Connected"
+            message="Dashboard data is coming from API"
           />
 
           <HealthSummary />

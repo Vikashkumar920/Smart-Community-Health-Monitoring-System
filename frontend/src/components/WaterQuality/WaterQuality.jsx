@@ -1,6 +1,21 @@
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 import './WaterQuality.css'
 
 function WaterQuality() {
+  const [waterData, setWaterData] = useState([])
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:5000/api/water-quality')
+      .then((res) => {
+        setWaterData(res.data.slice(0, 3))
+      })
+      .catch((err) => {
+        console.error('Water Quality API Error:', err)
+      })
+  }, [])
+
   return (
     <section className="water-quality">
       <div className="water-header">
@@ -15,50 +30,36 @@ function WaterQuality() {
       </div>
 
       <div className="water-grid">
-        <div className="water-card">
-          <div className="water-card-top">
-            <span className="water-icon">💧</span>
-            <span className="quality-good">Good</span>
+        {waterData.map((item) => (
+          <div className="water-card" key={item.id}>
+            <div className="water-card-top">
+              <span className="water-icon">💧</span>
+
+              <span
+                className={
+                  item.risk_status === 'high'
+                    ? 'quality-poor'
+                    : item.risk_status === 'medium'
+                    ? 'quality-medium'
+                    : 'quality-good'
+                }
+              >
+                {item.risk_status.toUpperCase()}
+              </span>
+            </div>
+
+            <h3>{item.village_name}</h3>
+
+            <p>
+              pH: {item.ph_level} | Turbidity: {item.turbidity}
+            </p>
+
+            <div className="water-value">
+              <span>Contamination Level</span>
+              <strong>{item.contamination_level}%</strong>
+            </div>
           </div>
-
-          <h3>Shivpur</h3>
-          <p>Water quality is within safe limits</p>
-
-          <div className="water-value">
-            <span>Quality Score</span>
-            <strong>92%</strong>
-          </div>
-        </div>
-
-        <div className="water-card">
-          <div className="water-card-top">
-            <span className="water-icon">💧</span>
-            <span className="quality-medium">Average</span>
-          </div>
-
-          <h3>Lakshmipur</h3>
-          <p>Water quality requires monitoring</p>
-
-          <div className="water-value">
-            <span>Quality Score</span>
-            <strong>68%</strong>
-          </div>
-        </div>
-
-        <div className="water-card">
-          <div className="water-card-top">
-            <span className="water-icon">💧</span>
-            <span className="quality-poor">Poor</span>
-          </div>
-
-          <h3>Rampur</h3>
-          <p>Possible contamination detected</p>
-
-          <div className="water-value">
-            <span>Quality Score</span>
-            <strong>38%</strong>
-          </div>
-        </div>
+        ))}
       </div>
     </section>
   )
