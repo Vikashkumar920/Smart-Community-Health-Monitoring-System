@@ -7,6 +7,7 @@ import RecentReports from './components/RecentReports/RecentReports'
 import RiskOverview from './components/RiskOverview/RiskOverview'
 import VillageOverview from './components/VillageOverview/VillageOverview'
 import WaterQuality from './components/WaterQuality/WaterQuality'
+import HealthReports from './components/HealthReports/HealthReports'
 
 function App() {
   return (
@@ -67,6 +68,8 @@ function App() {
           <VillageOverview />
 
           <WaterQuality />
+
+          <HealthReports />
         </main>
       </div>
     </>
