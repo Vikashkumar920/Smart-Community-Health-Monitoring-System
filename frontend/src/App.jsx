@@ -5,6 +5,7 @@ import AlertBox from './components/AlertBox/AlertBox'
 import HealthSummary from './components/HealthSummary/HealthSummary'
 import RecentReports from './components/RecentReports/RecentReports'
 import RiskOverview from './components/RiskOverview/RiskOverview'
+import VillageOverview from './components/VillageOverview/VillageOverview'
 
 function App() {
   return (
@@ -61,6 +62,8 @@ function App() {
           <RecentReports />
 
           <RiskOverview />
+
+          <VillageOverview />
         </main>
       </div>
     </>
